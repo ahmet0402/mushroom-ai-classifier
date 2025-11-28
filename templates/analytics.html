@@ -1,0 +1,364 @@
+<!-- D:\mushroom_web\templates\analytics.html -->
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📊 Analiz</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-leaf"></i> Mantar Sınıflandırma
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/"><i class="fas fa-home"></i> Ana Sayfa</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/batch"><i class="fas fa-images"></i> Tahmin</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/analytics"><i class="fas fa-chart-bar"></i> Analiz</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="hero-section">
+        <div class="container text-center">
+            <h1 class="display-4 fw-bold mb-3 fade-in">
+                <i class="fas fa-chart-line"></i> İstatistikler & Analiz
+            </h1>
+            <p class="lead mb-4 fade-in-delay">
+                Model performansı ve tahmin istatistikleri
+            </p>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container my-5">
+        <!-- Statistics Cards -->
+        <div class="stats-grid slide-up">
+            <div class="stat-card">
+                <div class="stat-icon text-primary">
+                    <i class="fas fa-images"></i>
+                </div>
+                <div class="stat-number">{{ stats.total_predictions }}</div>
+                <div class="stat-label">Toplam Tahmin</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon text-success">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <div class="stat-number">{{ stats.edible_count }}</div>
+                <div class="stat-label">Yenilebilir</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon text-danger">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <div class="stat-number">{{ stats.poisonous_count }}</div>
+                <div class="stat-label">Zehirli</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon text-warning">
+                    <i class="fas fa-percentage"></i>
+                </div>
+                <div class="stat-number">{{ stats.avg_confidence }}%</div>
+                <div class="stat-label">Ort. Güven Skoru</div>
+            </div>
+        </div>
+
+        <!-- Charts Row -->
+        <div class="row mt-4">
+            <!-- Pie Chart -->
+            <div class="col-lg-6 mb-4">
+                <div class="chart-container slide-up-delay">
+                    <h4 class="mb-4">
+                        <i class="fas fa-pie-chart"></i> Tahmin Dağılımı
+                    </h4>
+                    <canvas id="distributionChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Bar Chart -->
+            <div class="col-lg-6 mb-4">
+                <div class="chart-container slide-up-delay">
+                    <h4 class="mb-4">
+                        <i class="fas fa-chart-bar"></i> Güven Aralıkları
+                    </h4>
+                    <canvas id="confidenceChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Line Chart -->
+        <div class="row">
+            <div class="col-12">
+                <div class="chart-container slide-up-delay">
+                    <h4 class="mb-4">
+                        <i class="fas fa-chart-line"></i> Son 10 Tahmin Trendi
+                    </h4>
+                    <canvas id="trendChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Model Information -->
+        <div class="main-card mt-4 slide-up-delay">
+            <div class="card-header-custom">
+                <h3><i class="fas fa-brain"></i> Model Bilgileri</h3>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <h5 class="mb-3"><i class="fas fa-cogs"></i> Teknik Detaylar</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2">
+                            <i class="fas fa-check text-success"></i> 
+                            <strong>Framework:</strong> TensorFlow/Keras
+                        </li>
+                        <li class="mb-2">
+                            <i class="fas fa-check text-success"></i> 
+                            <strong>Model Tipi:</strong> Convolutional Neural Network (CNN)
+                        </li>
+                        <li class="mb-2">
+                            <i class="fas fa-check text-success"></i> 
+                            <strong>Girdi Boyutu:</strong> 128x128 RGB
+                        </li>
+                        <li class="mb-2">
+                            <i class="fas fa-check text-success"></i> 
+                            <strong>Çıktı Sınıfları:</strong> 2 (Edible, Poisonous)
+                        </li>
+                        <li class="mb-2">
+                            <i class="fas fa-check text-success"></i> 
+                            <strong>Aktivasyon:</strong> Softmax
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="col-md-6">
+                    <h5 class="mb-3"><i class="fas fa-chart-line"></i> Performans Metrikleri</h5>
+                    <div class="progress mb-3">
+                        <div class="progress-bar bg-success" role="progressbar" style="width: {{ metrics.accuracy }}%;" 
+                             aria-valuenow="{{ metrics.accuracy }}" aria-valuemin="0" aria-valuemax="100">
+                            <strong>Doğruluk: {{ metrics.accuracy }}%</strong>
+                        </div>
+                    </div>
+                    <div class="progress mb-3">
+                        <div class="progress-bar bg-info" role="progressbar" style="width: {{ metrics.precision }}%;" 
+                             aria-valuenow="{{ metrics.precision }}" aria-valuemin="0" aria-valuemax="100">
+                            <strong>Precision: {{ metrics.precision }}%</strong>
+                        </div>
+                    </div>
+                    <div class="progress mb-3">
+                        <div class="progress-bar bg-warning" role="progressbar" style="width: {{ metrics.recall }}%;" 
+                             aria-valuenow="{{ metrics.recall }}" aria-valuemin="0" aria-valuemax="100">
+                            <strong>Recall: {{ metrics.recall }}%</strong>
+                        </div>
+                    </div>
+                    <div class="progress">
+                        <div class="progress-bar bg-primary" role="progressbar" style="width: {{ metrics.f1_score }}%;" 
+                             aria-valuenow="{{ metrics.f1_score }}" aria-valuemin="0" aria-valuemax="100">
+                            <strong>F1-Score: {{ metrics.f1_score }}%</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="alert alert-info mt-4" role="alert">
+                <i class="fas fa-lightbulb"></i> 
+                <strong>Not:</strong> Bu metrikler eğitim ve test veri setleri üzerinden hesaplanmıştır. 
+                Gerçek dünya senaryolarında performans değişiklik gösterebilir.
+            </div>
+        </div>
+
+        <!-- Recent Predictions -->
+        {% if recent_predictions %}
+        <div class="main-card mt-4 slide-up-delay">
+            <div class="card-header-custom">
+                <h3><i class="fas fa-history"></i> Son Tahminler</h3>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th><i class="fas fa-hashtag"></i> #</th>
+                            <th><i class="fas fa-image"></i> Görsel</th>
+                            <th><i class="fas fa-tag"></i> Sonuç</th>
+                            <th><i class="fas fa-leaf"></i> Yenilebilir</th>
+                            <th><i class="fas fa-skull-crossbones"></i> Zehirli</th>
+                            <th><i class="fas fa-clock"></i> Zaman</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for pred in recent_predictions %}
+                        <tr>
+                            <td>{{ loop.index }}</td>
+                            <td>
+                                <img src="{{ pred.image_url }}" alt="Prediction" 
+                                     style="width: 50px; height: 50px; object-fit: cover; border-radius: 8px;">
+                            </td>
+                            <td>
+                                {% if pred.pred_label == 'edible' %}
+                                    <span class="badge bg-success">
+                                        <i class="fas fa-check"></i> Yenilebilir
+                                    </span>
+                                {% else %}
+                                    <span class="badge bg-danger">
+                                        <i class="fas fa-times"></i> Zehirli
+                                    </span>
+                                {% endif %}
+                            </td>
+                            <td><strong class="text-success">{{ pred.edible_prob }}%</strong></td>
+                            <td><strong class="text-danger">{{ pred.poisonous_prob }}%</strong></td>
+                            <td>{{ pred.timestamp }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% endif %}
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Distribution Pie Chart
+        const distributionCtx = document.getElementById('distributionChart').getContext('2d');
+        new Chart(distributionCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Yenilebilir', 'Zehirli'],
+                datasets: [{
+                    data: [{{ stats.edible_count }}, {{ stats.poisonous_count }}],
+                    backgroundColor: [
+                        'rgba(56, 239, 125, 0.8)',
+                        'rgba(244, 92, 67, 0.8)'
+                    ],
+                    borderColor: [
+                        'rgba(56, 239, 125, 1)',
+                        'rgba(244, 92, 67, 1)'
+                    ],
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            font: {
+                                size: 14
+                            },
+                            padding: 20
+                        }
+                    },
+                    title: {
+                        display: false
+                    }
+                }
+            }
+        });
+
+        // Confidence Bar Chart
+        const confidenceCtx = document.getElementById('confidenceChart').getContext('2d');
+        new Chart(confidenceCtx, {
+            type: 'bar',
+            data: {
+                labels: ['0-20%', '20-40%', '40-60%', '60-80%', '80-100%'],
+                datasets: [{
+                    label: 'Tahmin Sayısı',
+                    data: {{ stats.confidence_distribution | tojson }},
+                    backgroundColor: 'rgba(102, 126, 234, 0.8)',
+                    borderColor: 'rgba(102, 126, 234, 1)',
+                    borderWidth: 2,
+                    borderRadius: 8
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 1
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                }
+            }
+        });
+
+        // Trend Line Chart
+        const trendCtx = document.getElementById('trendChart').getContext('2d');
+        new Chart(trendCtx, {
+            type: 'line',
+            data: {
+                labels: {{ stats.trend_labels | tojson }},
+                datasets: [{
+                    label: 'Yenilebilir Güven Skoru',
+                    data: {{ stats.trend_edible | tojson }},
+                    borderColor: 'rgba(56, 239, 125, 1)',
+                    backgroundColor: 'rgba(56, 239, 125, 0.1)',
+                    tension: 0.4,
+                    fill: true,
+                    borderWidth: 3
+                }, {
+                    label: 'Zehirli Güven Skoru',
+                    data: {{ stats.trend_poisonous | tojson }},
+                    borderColor: 'rgba(244, 92, 67, 1)',
+                    backgroundColor: 'rgba(244, 92, 67, 0.1)',
+                    tension: 0.4,
+                    fill: true,
+                    borderWidth: 3
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100
+                    }
+                },
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            font: {
+                                size: 14
+                            },
+                            padding: 20
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
