@@ -57,8 +57,8 @@ AI destekli mantar sınıflandırma web uygulaması. Derin öğrenme algoritmas�
 
 ### Adım 1: Projeyi İndirin
 ```bash
-git clone https://github.com/KULLANICI_ADIN/mushroom-ai.git
-cd mushroom-ai
+git clone https://github.com/ahmet0402/mushroom-ai-classifier.git
+cd mushroom-ai-classifier
 ```
 
 ### Adım 2: Sanal Ortam Oluşturun (Önerilen)
@@ -223,8 +223,8 @@ Bu proje MIT Lisansı altında lisanslanmıştır. Detaylar için `LICENSE` dosy
 
 **Ahmet**
 
-- GitHub: [@KULLANICI_ADIN](https://github.com/KULLANICI_ADIN)
-- E-mail: your.email@example.com
+- GitHub: [@ahmet0402](https://github.com/ahmet0402)
+- E-mail: ahmet28ozturk@gmail.com
 
 ## 🙏 Teşekkürler
 
