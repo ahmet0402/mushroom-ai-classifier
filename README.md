@@ -113,6 +113,7 @@ mushroom_web/
 ├── mushroom_model.keras        # Eğitilmiş CNN modeli
 ├── requirements.txt            # Python bağımlılıkları
 ├── README.md                   # Proje dokümantasyonu
+├── LICENSE                     # MIT Lisansı
 │
 ├── static/                     # Statik dosyalar
 │   ├── css/
