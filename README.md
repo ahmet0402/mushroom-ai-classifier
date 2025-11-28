@@ -240,4 +240,4 @@ Bu uygulama **sadece eğitim ve araştırma amaçlıdır**. Gerçek hayatta mant
 
 ---
 
-⭐ Bu projeyi beğendiyseniz yıldız vermeyi unutmayın!
+✨ Bu projeyi beğendiyseniz yıldız vermeyi unutmayın!
