@@ -2,7 +2,7 @@
 
 AI destekli mantar sınıflandırma web uygulaması. Derin öğrenme algoritması ile mantar türlerini (yenilebilir/zehirli) anlık olarak analiz eder.
 
-🌐 **[Canlı Demo](https://mushroom-ai-classifier-production.up.railway.app)** - Şimdi deneyin!
+🌐 **[Canlı Demo](https://mushroom-ai-classifier-production1.up.railway.app)** - Şimdi deneyin!
 
 ![Python](https://img.shields.io/badge/Python-3.13-blue)
 ![Flask](https://img.shields.io/badge/Flask-3.0-green)
